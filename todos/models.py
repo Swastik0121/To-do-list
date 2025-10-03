@@ -7,7 +7,7 @@ class Todo(models.Model):
     description = models.TextField(blank=True)
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE) # To link each Todo Item to a specific User
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todos') # To link each Todo Item to a specific User
 
     def __str__(self):
         return self.title

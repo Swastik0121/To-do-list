@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #installed apps
     'rest_framework',
+    'corsheaders'
+    'django_filters',
     'todos',
 ]
 
@@ -123,9 +127,18 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#This tells DRF to use JWT for authentication by default
 REST_FRAMEWORK = {
+    #This tells DRF to use JWT for authentication by default
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    #This tells DRF to use django-filter for authentication by default
+    'DEFAULT_FILTER_BACKENDS':(
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
