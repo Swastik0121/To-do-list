@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import LoginForm from './components/LoginForm';
 import './App.css';
 
 function App() {
+  // checks localStorage for a token on initial load
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+
+  const handleLogout = () => {
+    setToken(null);
+    localStorage.removeItem('token');
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className='App'>
+      <header className='App-header'>
+        <h1>Todo App</h1>
+        {token && <button onClick={handleLogout}>Logout</button>}
       </header>
+      <main>
+        {!token ? (
+          <LoginForm setToken={setToken} />
+        ): (
+          <div>
+            <h2>Welcome! You are logged in.</h2>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
+
 
 export default App;
