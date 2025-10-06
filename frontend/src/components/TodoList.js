@@ -5,6 +5,7 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState('');
 
+  // Fetches Todo from the api
   const fetchTodos = async () => {
     try {
       const response = await apiClient.get('todos/');
@@ -14,10 +15,12 @@ const TodoList = () => {
     }
   };
 
+  // Hook to fetch todos when the component mounts
   useEffect(() => {
     fetchTodos();
   }, []);
 
+  // Handler for adding todo
   const handleAddTodo = async (e) => {
     e.preventDefault();
     if (!title.trim()) return;
@@ -30,12 +33,22 @@ const TodoList = () => {
     }
   };
 
+  // Handler to delete Todo
   const handleDelete = async (id) => {
     try {
       await apiClient.delete(`todos/${id}/`);
       fetchTodos();
     } catch (error) {
       console.error('Failed to delete todo', error);
+    }
+  };
+
+  const handleToggleComplete = async (id, currentStatus) => {
+    try {
+      await apiClient.patch(`todos/${id}/`, { completed: !currentStatus });
+      fetchTodos();
+    } catch (error) {
+      console.error('Failed to update todo', error);
     }
   };
 
@@ -53,8 +66,17 @@ const TodoList = () => {
       </form>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
-            {todo.title}
+          <li
+            key={todo.id}
+            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+          >
+            <span
+              onClick={() => {
+                handleToggleComplete(todo.id, todo.completed);
+              }}
+            >
+              {todo.title}
+            </span>
             <button
               onClick={() => handleDelete(todo.id)}
               style={{ marginLeft: '10px' }}
