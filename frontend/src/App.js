@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LoginForm from './components/LoginForm';
+import TodoList from './components/TodoList';
 import './App.css';
 
 function App() {
@@ -20,15 +21,12 @@ function App() {
       <main>
         {!token ? (
           <LoginForm setToken={setToken} />
-        ): (
-          <div>
-            <h2>Welcome! You are logged in.</h2>
-          </div>
+        ) : (
+          <TodoList /> // Displays the TodoList when Logged in.
         )}
       </main>
     </div>
   );
 }
-
 
 export default App;
